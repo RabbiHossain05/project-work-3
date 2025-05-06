@@ -1,0 +1,127 @@
+:root {
+    --primary: #382673;
+    --secondary: #F0F8FF;
+    --tertiary: #AF92FF;
+    --quaternary: #1E1048;
+    --success: #2E8B57;
+    --success-container: #194C30;
+    --error: #CA2A22;
+    --error-container: #51110E;
+    --logout: #8D1D18;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    font-family: Helvetica, HelveticaNeue, Arial sans-serif;
+    font-weight: 400;
+}
+
+.unselectable {
+    user-select: none;
+    -o-user-select: none;
+    -ms-user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+}
+
+body {
+    background-color: var(--primary);
+}
+
+h1 {
+    font-size: 3rem;
+    color: var(--secondary);
+}
+
+h1 > span {
+    font-weight: 700;
+    color: var(--tertiary);
+}
+
+h2 {
+    cursor: default;
+}
+
+form {
+    padding: 1.2rem;
+    border-radius: .6rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-size: 1rem;
+}
+
+input {
+    width: 16rem;
+    padding: .3rem .75rem;
+    margin: .45rem 0 1.2rem 0;
+    border: none;
+    border-radius: .3rem;
+    font-size: 1.05rem;
+    transition: 100ms ease-out;
+}
+
+button {
+    padding: .3rem .75rem;
+    border: none;
+    border-radius: .3rem;
+    font-size: 1.05rem;
+    cursor: pointer;
+    transition: 300ms ease-out;
+}
+button:hover {
+    filter: brightness(1.2);
+}
+button:active {
+    transition: 100ms ease-out;
+    filter: brightness(.9)
+}
+
+#feedback {
+    width: 17.5rem;
+    padding: .9rem 1.2rem;
+    margin-top: 1.5rem;
+    border-radius: .6rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.success {
+    outline: .0625rem solid var(--success);
+    background-color: var(--success-container);
+}
+
+.error {
+    outline: .0625rem solid var(--error);
+    background-color: var(--error-container);
+}
+
+#feedback > p {
+    width: calc(100% - 1.5rem - .75rem);
+    font-size: 1rem;
+    color: var(--secondary);
+}
+
+#feedback > svg {
+    width: 1.5rem;
+    margin-left: .75rem;
+    transition: 150ms ease-out;
+}
+#feedback > svg:hover {
+    filter: brightness(0.8);
+}
+#feedback > svg:active {
+    transition: 100ms ease-out;
+    filter: brightness(0.7);
+}
