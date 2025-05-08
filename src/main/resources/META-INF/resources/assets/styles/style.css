@@ -7,6 +7,12 @@
     --success-container: #194C30;
     --error: #CA2A22;
     --error-container: #51110E;
+    --data: #4682B4;
+    --primary-darker: #322267;
+    --pending: #FFD400;
+    --in-progress: #50C878;
+    --completed: #4678F0;
+    --delete-visit: #A61022;
     --logout: #8D1D18;
 }
 
@@ -29,6 +35,11 @@
 
 body {
     background-color: var(--primary);
+}
+
+header {
+    margin: 3rem 0 1.5rem 0;
+    display: flex;
 }
 
 h1 {
@@ -59,20 +70,25 @@ form {
 
 label {
     font-size: 1rem;
+    color: var(--secondary);
 }
 
 input {
     width: 16rem;
-    padding: .3rem .75rem;
+    padding: .35rem .75rem;
     margin: .45rem 0 1.2rem 0;
     border: none;
     border-radius: .3rem;
+    outline: .0625rem solid #AF92FF99;
     font-size: 1.05rem;
     transition: 100ms ease-out;
 }
+input:focus {
+    outline: .125rem solid var(--tertiary);
+}
 
 button {
-    padding: .3rem .75rem;
+    padding: .35rem .75rem;
     border: none;
     border-radius: .3rem;
     font-size: 1.05rem;
@@ -124,4 +140,8 @@ button:active {
 #feedback > svg:active {
     transition: 100ms ease-out;
     filter: brightness(0.7);
+}
+
+a {
+    text-decoration: none;
 }

@@ -2,8 +2,11 @@ body {
     background-color: var(--quaternary);
 }
 
+header {
+    justify-content: center;
+}
+
 h1 {
-    margin: 3rem 0 1.5rem 0;
     text-align: center;
 }
 
@@ -23,17 +26,9 @@ form {
     background-color: var(--primary);
 }
 
-label {
-    color: var(--secondary);
-}
-
 input {
-    outline: .0625rem solid #AF92FF99;
     background-color: var(--quaternary);
     color: var(--secondary);
-}
-input:focus {
-    outline: .125rem solid var(--tertiary);
 }
 
 button {
