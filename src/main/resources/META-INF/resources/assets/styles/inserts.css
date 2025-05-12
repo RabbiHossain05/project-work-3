@@ -1,0 +1,50 @@
+header {
+    justify-content: center;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h2 {
+    font-size: 1.8rem;
+    color: var(--secondary);
+}
+
+form {
+    margin-top: 1.2rem;
+    background-color: var(--quaternary);
+}
+
+input, select {
+    background-color: var(--primary);
+    color: var(--secondary);
+}
+
+button {
+    margin-top: .3rem;
+    background-color: var(--success);
+    color: var(--secondary);
+}
+
+#go-back {
+    padding: .35rem .75rem;
+    margin-top: .9rem;
+    border: none;
+    border-radius: .3rem;
+    font-size: 1.05rem;
+    text-align: center;
+    cursor: pointer;
+    background-color: var(--back);
+    color: var(--secondary);
+    transition: 300ms ease-out;
+}
+#go-back:hover {
+    filter: brightness(1.2);
+}
+#go-back:active {
+    transition: 100ms ease-out;
+    filter: brightness(.9)
+}

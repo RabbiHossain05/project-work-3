@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InfoDrive | Nuovo visitatore</title>
+    <link rel="stylesheet" href="../../META-INF/resources/assets/styles/style.css">
+    <link rel="stylesheet" href="../../META-INF/resources/assets/styles/inserts.css">
+    <script src="../../META-INF/resources/assets/scripts/constants.js" defer></script>
+    <script src="../../META-INF/resources/assets/scripts/functions.js" defer></script>
+    <script src="../../META-INF/resources/assets/scripts/script.js" defer></script>
+</head>
+
+<body>
+    <header>
+        <h1 class="unselectable">Info<span>Drive</span></h1>
+    </header>
+
+    <main>
+        <h2>Nuovo visitatore</h2>
+        <form action="add-visitor.html" method="post">
+            <div class="field">
+                <label for="first-name">Nome</label>
+                <input type="text" name="first-name" id="first-name">
+            </div>
+            <div class="field">
+                <label for="last-name">Cognome</label>
+                <input type="text" name="last-name" id="last-name">
+            </div>
+            <div class="field">
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email">
+            </div>
+            <div class="field">
+                <label for="phone">Telefono</label>
+                <input type="tel" name="phone" id="phone">
+            </div>
+            <button type="submit">Aggiungi</button>
+            <a href="../department.html" id="go-back">Indietro</a>
+        </form>
+    </main>
+</body>
+</html>

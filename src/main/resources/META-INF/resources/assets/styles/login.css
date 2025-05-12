@@ -6,10 +6,6 @@ header {
     justify-content: center;
 }
 
-h1 {
-    text-align: center;
-}
-
 main {
     display: flex;
     flex-direction: column;

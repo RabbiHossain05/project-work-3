@@ -3,24 +3,26 @@
     --secondary: #F0F8FF;
     --tertiary: #AF92FF;
     --quaternary: #1E1048;
+    --primary-darker: #322267;
     --success: #2E8B57;
     --success-container: #194C30;
     --error: #CA2A22;
     --error-container: #51110E;
     --data: #4682B4;
-    --primary-darker: #322267;
     --pending: #FFD400;
     --in-progress: #50C878;
     --completed: #4678F0;
-    --delete-visit: #A61022;
-    --end-visit: #971F1A;
     --assign-badge: #2F9551;
+    --end-visit: #971F1A;
+    --delete-visit: #A61022;
+    --back: #006DC8;
     --logout: #8D1D18;
 }
 
 * {
     padding: 0;
     margin: 0;
+    box-sizing: border-box;
     font-family: Helvetica, HelveticaNeue, Arial sans-serif;
     font-weight: 400;
 }
@@ -75,8 +77,8 @@ label {
     color: var(--secondary);
 }
 
-input {
-    width: 16rem;
+input, select {
+    width: 18rem;
     padding: .35rem .75rem;
     margin: .45rem 0 1.2rem 0;
     border: none;
@@ -85,7 +87,7 @@ input {
     font-size: 1.05rem;
     transition: 100ms ease-out;
 }
-input:focus {
+input:focus, select:focus {
     outline: .125rem solid var(--tertiary);
 }
 
