@@ -1,0 +1,11 @@
+id,name,surname,email,phone_number,role,company,
+1,Mario,Rossi,mario.rossi@gmail.com,+39 3204567890,client,elmec,
+2,Luigi,Verdi,luigi.verdi@gmail.com,+39 3349876543,client,mulino bianco,
+3,Princess,Peach,princess.peach@gmail.com,+39 3471234567,supplier,ferrari,
+4,Tommaso,Brivio,tommaso.brivio@gmail.com,+39 3602345678,Fornitore,Apple
+5,Marco,Corradini,marco.corradini@gmail.com,+39 18765432,Fornitore,Bitcoin
+6,Stefano,Gioia,stefano.gioia@gmail.com,+39 3405603040,Consulente,ITSIncom
+7,Fabio,Porzio,fabio.porzio@gmail.com,3+39 405603040,client,Qualcosa
+8,Giulia,Bianchi,giulia.bianchi@gmail.com,+39 3456789012,client,Microsoft
+9,Antonio,Russo,antonio.russo@gmail.com,+39 3567890123,supplier,Tesla
+10,sasa,a,albi@gmail.com,+393807560736,consultant,a
