@@ -16,30 +16,35 @@
     <header>
         <h1 class="unselectable">Info<span>Drive</span></h1>
         <nav>
-            <a href="department/add-visit.html" class="link">Aggiungi visita</a>
-            <a href="department/add-visitor.html" class="link">Aggiungi visitatore</a>
+             <div id="badges">
+                <img src="../META-INF/resources/assets/images/badge.jpg" alt="Badges" id="b-icon" class="unselectable">
+                <div id="b-number"><span id="b-available" title="Available badges">9</span> / <span id="b-total" title="Total badges">10</span></div>
+             </div>
             <a href="#" class="logout">Esci</a>
         </nav>
     </header>
 
     <section id="date-section">
-        <form action="department.html" method="get">
+        <form action="reception.html" method="get">
             <label for="date">Seleziona una data:</label>
             <input type="date" name="date" id="date">
             <button type="submit">Visualizza</button>
         </form>
     </section>
 
-    <main id="m-department" class="main">
-        <table class="visits department">
+    <main id="m-reception" class="main">
+        <table class="visits reception">
             <thead>
                 <tr>
                     <th>Visitatore</th>
-                    <th>Email</th>
+                    <th>Email visitatore</th>
+                    <th>Dipendente</th>
+                    <th>Email dipendente</th>
                     <th>Ora d'inizio</th>
                     <th>Durata prevista</th>
                     <th>Ora di fine</th>
                     <th>Stato</th>
+                    <th>Badge</th>
                     <th>Azione</th>
                 </tr>
             </thead>
@@ -47,6 +52,8 @@
                 <tr>
                     <td>Marco Rossi</td>
                     <td>marco.rossi@example.com</td>
+                    <td>Giulio Verdi</td>
+                    <td>giulio.verdi@example.com</td>
                     <td>10:00</td>
                     <td>120 min</td>
                     <td class="expected-end">12:00</td>
@@ -56,11 +63,16 @@
                             In corso
                         </div>
                     </td>
-                    <td></td>
+                    <td>B001</td>
+                    <td>
+                        <button class="action end-visit">Termina visita</button>
+                    </td>
                 </tr>
                 <tr>
                     <td>Giulio Verdi</td>
                     <td>giulio.verdi@example.com</td>
+                    <td>Roberto Blu</td>
+                    <td>roberto.blu@example.com</td>
                     <td>15:00</td>
                     <td>180 min</td>
                     <td class="expected-end">18:00</td>
@@ -70,13 +82,16 @@
                             In attesa
                         </div>
                     </td>
+                    <td></td>
                     <td>
-                        <button class="action delete-visit">Elimina</button>
+                        <button class="action assign-badge">Assegna badge</button>
                     </td>
                 </tr>
                 <tr>
                     <td>Roberto Blu</td>
                     <td>roberto.blu@example.com</td>
+                    <td>Marco Rossi</td>
+                    <td>marco.rossi@example.com</td>
                     <td>09:00</td>
                     <td>90 min</td>
                     <td>10:25</td>
@@ -86,6 +101,7 @@
                             Completato
                         </div>
                     </td>
+                    <td></td>
                     <td></td>
                 </tr>
             </tbody>
