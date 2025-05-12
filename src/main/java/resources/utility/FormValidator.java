@@ -1,9 +1,9 @@
-package utility.validation;
+package resources.utility;
+
+import jakarta.enterprise.context.ApplicationScoped;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-
-import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class FormValidator {

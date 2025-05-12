@@ -1,43 +1,28 @@
-package logic;
-
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.Writer;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVPrinter;
-import org.apache.commons.csv.CSVRecord;
+package service;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import model.Employee;
 import model.Guest;
 import model.visit.Visit;
 import model.visit.VisitStatus;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.csv.CSVRecord;
+
+import java.io.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 @ApplicationScoped
 public class VisitManager {
 
     static final String FILE_PATH = "data/visits.csv";
 
-    /**
-     * *
-     * Reads visits from the file and returns a list of all visits.
-     *
-     * This method parses the `visits.csv` file, extracts each visit's details
-     * such as date, expected and actual start/end times, visit status, guest
-     * and employee IDs, and badge code. It then returns a list of `Visit`
-     * objects.
-     *
-     * @return A list of `Visit` objects parsed from the file.
-     */
+
     public List<Visit> getVisitsFromFile() {
 
         List<Visit> visits = new ArrayList<>();
@@ -68,18 +53,7 @@ public class VisitManager {
         return visits;
     }
 
-    /**
-     * *
-     * Saves a new visit to the file.
-     *
-     * This method adds a new visit to the `visits.csv` file. It checks for
-     * duplicates before saving the visit, and returns `true` if the visit is
-     * successfully saved, or `false` if a duplicate visit is found.
-     *
-     * @param visit The visit to be saved.
-     * @return `true` if the visit is saved successfully, `false` if it's a
-     * duplicate.
-     */
+
     public boolean saveVisit(Visit visit) {
 
         if (!checkDouble(visit)) {
@@ -104,14 +78,7 @@ public class VisitManager {
         return false;
     }
 
-    /**
-     * Filters visits by a specific date.
-     *
-     * This method filters and returns all visits that match the provided date.
-     *
-     * @param date The date to filter visits by.
-     * @return A list of visits that match the provided date.
-     */
+
     public List<Visit> getVisitsByDate(LocalDate date) {
         List<Visit> visits = getVisitsFromFile();
         List<Visit> filteredVisits = new ArrayList<>();
@@ -125,13 +92,7 @@ public class VisitManager {
         return filteredVisits;
     }
 
-    /**
-     * Filter a specific list of visits by a specific employee id.
-     *
-     * @param visits A list containing visits.
-     * @param employeeId The employee id to filter.
-     * @return A list of visits.
-     */
+
     public List<Visit> filterVisitsByEmployeeId(List<Visit> visits, String employeeId) {
         List<Visit> filteredVisits = new ArrayList<>();
 
@@ -144,16 +105,7 @@ public class VisitManager {
         return filteredVisits;
     }
 
-    /**
-     * *
-     * Filters and returns visits that have not yet ended.
-     *
-     * This method checks for visits where the actual ending hour is still set
-     * to the default value ("00:00") and the visit has already started. It
-     * returns a list of such unfinished visits.
-     *
-     * @return A list of unfinished visits.
-     */
+
     public List<Visit> getUnfinishedVisits() {
         List<Visit> visits = getVisitsFromFile();
 
@@ -170,16 +122,7 @@ public class VisitManager {
         return filteredVisits;
     }
 
-    /**
-     * *
-     * Filters and returns visits that have not yet started.
-     *
-     * This method checks for visits where both the actual starting and ending
-     * hours are still set to the default value ("00:00"). It returns a list of
-     * such unstarted visits.
-     *
-     * @return A list of unstarted visits.
-     */
+
     public List<Visit> getUnstartedVisits() {
         List<Visit> visits = getVisitsFromFile();
         List<Visit> filteredVisits = new ArrayList<>();
@@ -197,15 +140,7 @@ public class VisitManager {
         return filteredVisits;
     }
 
-    /**
-     * Filters unstarted visits by a specific date.
-     *
-     * This method filters and returns all unstarted visits that match the
-     * provided date.
-     *
-     * @param date The date to filter visits by.
-     * @return A list of unstarted visits that match the provided date.
-     */
+
     public List<Visit> getUnstartedVisitsByDate(LocalDate date) {
         List<Visit> visits = getVisitsFromFile();
         List<Visit> filteredVisits = new ArrayList<>();
@@ -225,17 +160,7 @@ public class VisitManager {
         return filteredVisits;
     }
 
-    /**
-     * *
-     * Retrieves a visit by its ID.
-     *
-     * This method searches for a visit with the specified ID in the list of all
-     * visits. If the visit is found, it is returned; otherwise, `null` is
-     * returned.
-     *
-     * @param inputVisitId The ID of the visit to retrieve.
-     * @return The `Visit` object if found, `null` if not found.
-     */
+
     public Visit getVisitById(String inputVisitId) {
         List<Visit> visits = getVisitsFromFile();
 
@@ -247,16 +172,7 @@ public class VisitManager {
         return null;
     }
 
-    /**
-     * *
-     * Filters out the specified visit from the list of all visits.
-     *
-     * This method filters out the given visit from the list of all visits based
-     * on the visit's ID, and returns the remaining visits.
-     *
-     * @param visit The visit to be excluded from the result list.
-     * @return A list of all visits excluding the specified visit.
-     */
+
     public List<Visit> getFilteredVisits(Visit visit) {
         List<Visit> visits = getVisitsFromFile();
         List<Visit> filteredVisits = new ArrayList<>();
@@ -271,18 +187,7 @@ public class VisitManager {
         return filteredVisits;
     }
 
-    /**
-     * *
-     * Overwrites the entire list of visits in the file.
-     *
-     * This method overwrites the `visits.csv` file with the provided list of
-     * visits. It saves all visits in the new list, including their details such
-     * as date, start/end times, status, and IDs.
-     *
-     * @param visits The list of visits to be saved to the file.
-     * @return `true` if the overwrite operation is successful, `false` if it
-     * fails.
-     */
+
     public boolean overwriteVisits(List<Visit> visits) {
 
         try (FileWriter writer = new FileWriter(FILE_PATH); CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.EXCEL.withHeader("id", "date", "expected_starting_hour", "actual_starting_hour", "expected_ending_hour", "actual_ending_time", "visit_status", "guest_id", "employee_id", "badge_code"))) {
@@ -308,16 +213,7 @@ public class VisitManager {
 
     }
 
-    /**
-     * *
-     * Generates a new unique visit ID.
-     *
-     * This method calculates the next available ID by checking the last visit
-     * in the list of visits and incrementing the ID by one. If there are no
-     * visits, it returns 1.
-     *
-     * @return The next available visit ID.
-     */
+
     public int getNewId() {
         List<Visit> visits = getVisitsFromFile();
 
@@ -328,18 +224,7 @@ public class VisitManager {
         }
     }
 
-    /**
-     * *
-     * Checks if a visit is a duplicate based on its details.
-     *
-     * This method compares the provided visit with existing visits to check if
-     * a visit with the same date, starting and ending hours, guest, and
-     * employee IDs already exists. If a duplicate is found, it returns `true`;
-     * otherwise, it returns `false`.
-     *
-     * @param visit The visit to be checked for duplicates.
-     * @return `true` if a duplicate visit is found, `false` otherwise.
-     */
+
     public boolean checkDouble(Visit visit) {
         List<Visit> visits = getVisitsFromFile();
 
@@ -354,14 +239,7 @@ public class VisitManager {
         return false;
     }
 
-    /**
-     * Change ids of a visit in employees and guests surname.
-     *
-     * @param visits A list containing visits.
-     * @param guestManager GuestManager object used to take all guests.
-     * @param employeeManager EmployeeManager object used to take all employees.
-     * @return
-     */
+
     public List<Visit> changeIdsInSurnames(List<Visit> visits, GuestManager guestManager, EmployeeManager employeeManager) {
 
         List<Visit> changedVisits = new ArrayList<>();

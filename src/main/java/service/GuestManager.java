@@ -1,22 +1,17 @@
-package logic;
+package service;
 
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.Writer;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
+import jakarta.enterprise.context.ApplicationScoped;
+import model.Guest;
+import model.visit.Visit;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 
-import jakarta.enterprise.context.ApplicationScoped;
-import model.Guest;
-import model.visit.Visit;
+import java.io.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @ApplicationScoped
 public class GuestManager {
@@ -28,17 +23,7 @@ public class GuestManager {
         this.visitManager = visitManager;
     }
 
-    /**
-     * *
-     * Retrieves a list of guests from the CSV file.
-     *
-     * This method reads the guest data from the file located at
-     * `data/guests.csv`, parses the CSV content, and converts it into a list of
-     * Guest objects. Each guest's data is mapped from the CSV columns to the
-     * corresponding fields of the Guest class.
-     *
-     * @return A list of Guest objects representing the guests from the file.
-     */
+
     public List<Guest> getGuestsFromFile() {
         List<Guest> guests = new ArrayList<>();
 
@@ -61,16 +46,7 @@ public class GuestManager {
         return guests;
     }
 
-    /**
-     * *
-     * Saves a guest's data to the CSV file.
-     *
-     * This method appends a new record with the provided guest's information to
-     * the CSV file located at `data/guests.csv`. The file is opened in append
-     * mode, and the new record is added at the end.
-     *
-     * @param guest The Guest object containing the information to be saved.
-     */
+
     public void saveGuest(Guest guest) {
 
         try (Writer writer = new FileWriter(FILE_PATH, true); CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.EXCEL)) {
@@ -88,18 +64,7 @@ public class GuestManager {
         }
     }
 
-    /**
-     * *
-     * Retrieves a guest by their unique ID.
-     *
-     * This method searches the list of guests retrieved from the file and
-     * returns the Guest object whose ID matches the given ID. If no guest with
-     * the given ID is found, the method returns null.
-     *
-     * @param id The ID of the guest to be retrieved.
-     * @return The Guest object corresponding to the given ID, or null if not
-     * found.
-     */
+
     public Guest getGuestById(String id) {
         List<Guest> guests = getGuestsFromFile();
 
@@ -111,51 +76,7 @@ public class GuestManager {
         return null;
     }
 
-    /**
-     * *
-     * Retrieves a list of guests who visited on a specific date.
-     *
-     * This method filters the visits and returns the list of guests whose visit
-     * date matches the provided date. The method first filters the visits by
-     * the given date, then retrieves the corresponding guest information.
-     *
-     * @param visitDate The visit date to filter guests by.
-     * @return A list of Guest objects who visited on the given date.
-     */
-    //Da testare
-    public List<Guest> getGuestsByVisitDate(LocalDate visitDate) {
-        List<Visit> filteredVisits = new ArrayList<>();
-        List<String> guestsIds = new ArrayList<>();
-        List<Guest> filteredGuests = new ArrayList<>();
 
-        List<Visit> loadedVisits = visitManager.getVisitsFromFile();
-        List<Guest> loadedGuests = getGuestsFromFile();
-
-        for (Visit loadedVisit : loadedVisits) {
-            if (loadedVisit.getDate().equals(visitDate)) {
-                guestsIds.add(loadedVisit.getId());
-            }
-        }
-
-        for (Guest loadedGuest : loadedGuests) {
-            if (guestsIds.contains(loadedGuest.getId())) {
-                filteredGuests.add(loadedGuest);
-            }
-        }
-
-        return filteredGuests;
-    }
-
-    /**
-     * *
-     * Retrieves the next available unique ID for a new guest.
-     *
-     * This method calculates the next available ID by looking at the existing
-     * guest records and returning the next number in sequence. If there are no
-     * existing guests, it returns 1 as the starting ID.
-     *
-     * @return The next available ID for a new guest.
-     */
     public int getNewId() {
         List<Guest> guests = getGuestsFromFile();
 
@@ -166,12 +87,7 @@ public class GuestManager {
         }
     }
 
-    /**
-     * Check if a guest already exist.
-     *
-     * @param inputGuest The guest to check if exist.
-     * @return `true` if not exist, `false` otherwise.
-     */
+
     public boolean isGuestAlreadyExisting(Guest inputGuest) {
         List<Guest> guests = getGuestsFromFile();
 
