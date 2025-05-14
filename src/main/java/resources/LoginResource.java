@@ -2,10 +2,8 @@ package resources;
 
 import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
-import jakarta.ws.rs.FormParam;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.NewCookie;
 import jakarta.ws.rs.core.Response;
 import model.Employee;
@@ -31,12 +29,13 @@ public class LoginResource {
     }
 
     @GET
-    public TemplateInstance showLogin(){
-        return login.instance();
+    public Response showLogin(){
+
+        return Response.ok(login.data("errorMessage", null)).build();
     }
 
-    @Path("/checkLogin")
     @POST
+    @Produces(MediaType.TEXT_HTML)
     public Response checkLogin(
             @FormParam("email") String email,
             @FormParam("password") String password
@@ -45,16 +44,16 @@ public class LoginResource {
         String errorMessage = "";
 
         if (!credentialValidator.isValid(email)){
-            errorMessage += "Email is empty\n";
+            errorMessage += "Il campo email è vuoto\n";
         }
 
         if (!credentialValidator.isValid(password)){
-            errorMessage += "Password is empty\n";
+            errorMessage += "Il campo password è vuoto\n";
         }
 
         if (!errorMessage.isEmpty()){
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity(login.data("message", errorMessage))
+                    .entity(login.data("errorMessage", errorMessage))
                     .build();
         }
 
@@ -76,9 +75,9 @@ public class LoginResource {
                     .build();
         }
         else {
-            errorMessage = "Username or password are incorrect";
+            errorMessage = "Email o password errate";
             return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity(login.data("message", errorMessage))
+                    .entity(login.data("errorMessage", errorMessage))
                     .build();
         }
     }

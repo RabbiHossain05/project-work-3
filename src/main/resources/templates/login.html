@@ -18,7 +18,10 @@
 
     <main>
         <h2>Accedi</h2>
-        <form action="/checkLogin" method="post">
+        {#if errorMessage != null}
+            <h3 class="error">{errorMessage}</h3>
+        {/if}
+        <form action="/" method="post">
             <div class="field">
                 <label for="email">Email</label>
                 <input type="email" name="email" id="email">

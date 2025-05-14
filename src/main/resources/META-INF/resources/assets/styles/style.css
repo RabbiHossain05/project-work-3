@@ -123,8 +123,10 @@ button:active {
 }
 
 .error {
-    outline: .0625rem solid var(--error);
-    background-color: var(--error-container);
+    margin-top: 1rem;
+    color: red;
+    white-space: pre-wrap;
+    text-align: center;
 }
 
 #feedback > p {
@@ -149,3 +151,4 @@ button:active {
 a {
     text-decoration: none;
 }
+
