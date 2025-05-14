@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>InfoDrive | Nuova visita</title>
-    <link rel="stylesheet" href="../../META-INF/resources/assets/styles/style.css">
-    <link rel="stylesheet" href="../../META-INF/resources/assets/styles/inserts.css">
-    <script src="../../META-INF/resources/assets/scripts/constants.js" defer></script>
-    <script src="../../META-INF/resources/assets/scripts/functions.js" defer></script>
-    <script src="../../META-INF/resources/assets/scripts/script.js" defer></script>
+    <link rel="stylesheet" href="/assets/styles/style.css">
+    <link rel="stylesheet" href="/assets/styles/inserts.css">
+    <script src="/assets/scripts/constants.js" defer></script>
+    <script src="/assets/scripts/functions.js" defer></script>
+    <script src="/assets/scripts/script.js" defer></script>
 </head>
 
 <body>
@@ -18,17 +18,22 @@
 
     <main>
         <h2>Nuova visita</h2>
-        <form action="add-visit.html" method="post">
+        <form action="/department/add-visit" method="post">
             <div class="field">
                 <label for="visitor">Visitatore</label>
                 <select name="visitor" id="visitor">
                     <option value="" selected disabled>Seleziona il visitatore</option>
+                    {#for visitor in visitors}
+                        <option value="{visitor.id}">{visitor.firstName} {visitor.lastName}</option>
+                    {/for}
                 </select>
             </div>
             <div class="field">
                 <label for="employee">Dipendente</label>
                 <select name="employee" id="employee">
-                    <option value="">Valentino Rossi</option>
+                    {#for employee in employees}
+                        <option value="{employee.id}">{employee.firstName} {employee.lastName}</option>
+                    {/for}
                 </select>
             </div>
             <div class="field">
@@ -36,15 +41,15 @@
                 <input type="date" name="date" id="date">
             </div>
             <div class="field">
-                <label for="time">Orario</label>
-                <input type="time" name="time" id="time">
+                <label for="start-time">Ora di inizio</label>
+                <input type="time" name="start-time" id="start-time">
             </div>
             <div class="field">
-                <label for="duration">Durata in minuti</label>
-                <input type="number" name="duration" id="duration">
+                <label for="end-time">Ora di fine</label>
+                <input type="time" name="end-time" id="end-time">
             </div>
             <button type="submit">Aggiungi</button>
-            <a href="../department.html" id="go-back">Indietro</a>
+            <a href="/department" id="go-back">Indietro</a>
         </form>
     </main>
 </body>

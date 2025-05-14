@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>InfoDrive | Nuovo visitatore</title>
-    <link rel="stylesheet" href="../../META-INF/resources/assets/styles/style.css">
-    <link rel="stylesheet" href="../../META-INF/resources/assets/styles/inserts.css">
-    <script src="../../META-INF/resources/assets/scripts/constants.js" defer></script>
-    <script src="../../META-INF/resources/assets/scripts/functions.js" defer></script>
-    <script src="../../META-INF/resources/assets/scripts/script.js" defer></script>
+    <link rel="stylesheet" href="/assets/styles/style.css">
+    <link rel="stylesheet" href="/assets/styles/inserts.css">
+    <script src="/assets/scripts/constants.js" defer></script>
+    <script src="/assets/scripts/functions.js" defer></script>
+    <script src="/assets/scripts/script.js" defer></script>
 </head>
 
 <body>
@@ -18,7 +18,7 @@
 
     <main>
         <h2>Nuovo visitatore</h2>
-        <form action="add-visitor.html" method="post">
+        <form action="/department/add-visitor" method="post">
             <div class="field">
                 <label for="first-name">Nome</label>
                 <input type="text" name="first-name" id="first-name">
@@ -35,8 +35,12 @@
                 <label for="phone">Telefono</label>
                 <input type="tel" name="phone" id="phone">
             </div>
+            <div class="field">
+                <label for="company">Azienda</label>
+                <input type="text" name="company" id="company">
+            </div>
             <button type="submit">Aggiungi</button>
-            <a href="../department.html" id="go-back">Indietro</a>
+            <a href="/department" id="go-back">Indietro</a>
         </form>
     </main>
 </body>
