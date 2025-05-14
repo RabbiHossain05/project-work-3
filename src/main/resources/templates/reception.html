@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>InfoDrive | Dashboard</title>
-    <link rel="stylesheet" href="../META-INF/resources/assets/styles/style.css">
-    <link rel="stylesheet" href="../META-INF/resources/assets/styles/department.css">
+    <link rel="stylesheet" href="/assets/styles/style.css">
+    <link rel="stylesheet" href="/assets/styles/department.css">
     <script src="../META-INF/resources/assets/scripts/constants.js" defer></script>
     <script src="../META-INF/resources/assets/scripts/functions.js" defer></script>
     <script src="../META-INF/resources/assets/scripts/script.js" defer></script>
@@ -17,15 +17,15 @@
         <h1 class="unselectable">Info<span>Drive</span></h1>
         <nav>
              <div id="badges">
-                <img src="../META-INF/resources/assets/images/badge.jpg" alt="Badges" id="b-icon" class="unselectable">
+                <img src="/assets/images/badge.jpg" alt="Badges" id="b-icon" class="unselectable">
                 <div id="b-number"><span id="b-available" title="Available badges">9</span> / <span id="b-total" title="Total badges">10</span></div>
              </div>
-            <a href="#" class="logout">Esci</a>
+            <a href="/logout" class="logout">Esci</a>
         </nav>
     </header>
 
     <section id="date-section">
-        <form action="reception.html" method="get">
+        <form action="/util/filter-visits/reception" method="post">
             <label for="date">Seleziona una data:</label>
             <input type="date" name="date" id="date">
             <button type="submit">Visualizza</button>
