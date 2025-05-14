@@ -10,18 +10,20 @@ public class Visit {
     private LocalTime actualStartingHour;
     private LocalTime expectedEndingHour;
     private LocalTime actualEndingHour;
+    private String expectedDuration;
     private VisitStatus status;
     private String guestId;
     private String employeeId;
     private String badgeCode;
 
-    public Visit(String id, LocalDate date, LocalTime expectedStartingHour, LocalTime actualStartingHour, LocalTime expectedEndingHour, LocalTime actualEndingHour, VisitStatus status, String guestId, String employeeId, String badgeCode) {
+    public Visit(String id, LocalDate date, LocalTime expectedStartingHour, LocalTime actualStartingHour, LocalTime expectedEndingHour, LocalTime actualEndingHour, String expectedDuration, VisitStatus status, String guestId, String employeeId, String badgeCode) {
         this.id = id;
         this.date = date;
         this.expectedStartingHour = expectedStartingHour;
         this.actualStartingHour = actualStartingHour;
         this.expectedEndingHour = expectedEndingHour;
         this.actualEndingHour = actualEndingHour;
+        this.expectedDuration = expectedDuration;
         this.status = status;
         this.guestId = guestId;
         this.employeeId = employeeId;
@@ -106,5 +108,13 @@ public class Visit {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getExpectedDuration() {
+        return expectedDuration;
+    }
+
+    public void setExpectedDuration(String expectedDuration) {
+        this.expectedDuration = expectedDuration;
     }
 }

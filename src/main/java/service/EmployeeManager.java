@@ -49,8 +49,8 @@ public class EmployeeManager {
         try (Writer writer = new FileWriter(FILE_PATH, true); CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.EXCEL.withHeader("id", "name", "surname", "date_of_birth", "department", "email", "password"))) {
             csvPrinter.printRecord(
                     employee.getId(),
-                    employee.getName(),
-                    employee.getSurname(),
+                    employee.getFirstName(),
+                    employee.getLastName(),
                     employee.getDateOfBirth(),
                     employee.getPhoneNumber(),
                     employee.getDepartment(),

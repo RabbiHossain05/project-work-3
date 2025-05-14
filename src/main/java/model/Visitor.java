@@ -1,21 +1,19 @@
 package model;
 
-public class Guest {
+public class Visitor {
     private String id;
-    private String name;
-    private String surname;
+    private String firstName;
+    private String lastName;
     private String email;
     private String phoneNumber;
-    private String role;
     private String company;
 
-    public Guest(String id, String name, String surname, String email, String phoneNumber, String role, String company) {
+    public Visitor(String id, String firstName, String lastName, String email, String phoneNumber, String company) {
         this.id = id;
-        this.name = name;
-        this.surname = surname;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.role = role;
         this.company = company;
     }
 
@@ -27,20 +25,20 @@ public class Guest {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getSurname() {
-        return surname;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -57,14 +55,6 @@ public class Guest {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 
     public String getCompany() {

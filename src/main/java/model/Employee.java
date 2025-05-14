@@ -4,18 +4,18 @@ import java.time.LocalDate;
 
 public class Employee {
     private String id;
-    private String name;
-    private String surname;
+    private String firstName;
+    private String lastName;
     private LocalDate dateOfBirth;
     private String phoneNumber;
     private String department;
     private String email;
     private String password;
 
-    public Employee(String id, String name, String surname, LocalDate dateOfBirth, String phoneNumber, String department, String email, String password) {
+    public Employee(String id, String firstName, String lastName, LocalDate dateOfBirth, String phoneNumber, String department, String email, String password) {
         this.id = id;
-        this.name = name;
-        this.surname = surname;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
         this.phoneNumber = phoneNumber;
         this.department = department;
@@ -31,20 +31,20 @@ public class Employee {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getSurname() {
-        return surname;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public LocalDate getDateOfBirth() {

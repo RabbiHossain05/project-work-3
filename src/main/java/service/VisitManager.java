@@ -2,7 +2,7 @@ package service;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import model.Employee;
-import model.Guest;
+import model.Visitor;
 import model.visit.Visit;
 import model.visit.VisitStatus;
 import org.apache.commons.csv.CSVFormat;
@@ -21,7 +21,11 @@ import java.util.List;
 public class VisitManager {
 
     static final String FILE_PATH = "data/visits.csv";
+    private final VisitorManager visitorManager;
 
+    public VisitManager(VisitorManager visitorManager) {
+        this.visitorManager = visitorManager;
+    }
 
     public List<Visit> getVisitsFromFile() {
 
@@ -38,12 +42,13 @@ public class VisitManager {
                 LocalTime actualStartingHour = LocalTime.parse(record.get("actual_starting_hour"), timeFormatter);
                 LocalTime expectedEndingHour = LocalTime.parse(record.get("expected_ending_hour"), timeFormatter);
                 LocalTime actualEndingHour = LocalTime.parse(record.get("actual_ending_time"), timeFormatter);
+                String expectedDuration = record.get("expected_duration");
                 VisitStatus visitStatus = VisitStatus.valueOf(record.get("visit_status"));
                 String guestId = record.get("guest_id");
                 String employeeId = record.get("employee_id");
                 String badgeCode = record.get("badge_code");
 
-                Visit visit = new Visit(id, date, expectedStartingHour, actualStartingHour, expectedEndingHour, actualEndingHour, visitStatus, guestId, employeeId, badgeCode);
+                Visit visit = new Visit(id, date, expectedStartingHour, actualStartingHour, expectedEndingHour, actualEndingHour, expectedDuration, visitStatus, guestId, employeeId, badgeCode);
                 visits.add(visit);
             }
         } catch (IOException e) {
@@ -65,6 +70,7 @@ public class VisitManager {
                         visit.getActualStartingHour().format(DateTimeFormatter.ofPattern("HH:mm")),
                         visit.getExpectedEndingHour().format(DateTimeFormatter.ofPattern("HH:mm")),
                         visit.getActualEndingHour().format(DateTimeFormatter.ofPattern("HH:mm")),
+                        visit.getExpectedDuration(),
                         visit.getStatus().name(),
                         visit.getGuestId(),
                         visit.getEmployeeId(),
@@ -240,19 +246,38 @@ public class VisitManager {
     }
 
 
-    public List<Visit> changeIdsInSurnames(List<Visit> visits, GuestManager guestManager, EmployeeManager employeeManager) {
+    public List<Visit> changeIdsInSurnames(List<Visit> visits, VisitorManager visitorManager, EmployeeManager employeeManager) {
 
         List<Visit> changedVisits = new ArrayList<>();
 
         for (Visit visit : visits) {
-            Guest guest = guestManager.getGuestById(visit.getGuestId());
+            Visitor visitor = visitorManager.getVisitorById(visit.getGuestId());
             Employee employee = employeeManager.getEmployeeById(visit.getEmployeeId());
 
-            visit.setGuestId(guest.getSurname());
-            visit.setEmployeeId(employee.getSurname());
+            visit.setGuestId(visitor.getLastName());
+            visit.setEmployeeId(employee.getLastName());
 
             changedVisits.add(visit);
         }
         return changedVisits;
     }
+
+
+    public List<Visitor> getVisitors(List<Visit> visits) {
+        List<Visitor> visitors = visitorManager.getVisitorsFromFile();
+        List<Visitor> filteredVisitors = new ArrayList<>();
+
+        for (Visit visit : visits) {
+            String guestId = visit.getGuestId();
+
+            for (Visitor visitor : visitors) {
+                if (visitor.getId().equals(guestId)) {
+                    filteredVisitors.add(visitor);
+                }
+            }
+        }
+
+        return filteredVisitors;
+    }
+
 }

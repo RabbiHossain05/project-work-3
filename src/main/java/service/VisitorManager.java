@@ -1,31 +1,29 @@
 package service;
 
 import jakarta.enterprise.context.ApplicationScoped;
-import model.Guest;
-import model.visit.Visit;
+import model.Visitor;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 
 import java.io.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @ApplicationScoped
-public class GuestManager {
+public class VisitorManager {
 
-    final String FILE_PATH = "data/guests.csv";
+    final String FILE_PATH = "data/visitors.csv";
     final VisitManager visitManager;
 
-    public GuestManager(VisitManager visitManager) {
+    public VisitorManager(VisitManager visitManager) {
         this.visitManager = visitManager;
     }
 
 
-    public List<Guest> getGuestsFromFile() {
-        List<Guest> guests = new ArrayList<>();
+    public List<Visitor> getVisitorsFromFile() {
+        List<Visitor> visitors = new ArrayList<>();
 
         try (Reader reader = new FileReader(FILE_PATH); CSVParser csvParser = new CSVParser(reader, CSVFormat.EXCEL.withHeader());) {
             for (CSVRecord record : csvParser) {
@@ -34,30 +32,28 @@ public class GuestManager {
                 String surname = record.get("surname");
                 String email = record.get("email");
                 String phoneNumber = record.get("phone_number");
-                String role = record.get("role");
                 String company = record.get("company");
 
-                Guest guest = new Guest(id, name, surname, email, phoneNumber, role, company);
-                guests.add(guest);
+                Visitor visitor = new Visitor(id, name, surname, email, phoneNumber, company);
+                visitors.add(visitor);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return guests;
+        return visitors;
     }
 
 
-    public void saveGuest(Guest guest) {
+    public void saveVisitor(Visitor visitor) {
 
         try (Writer writer = new FileWriter(FILE_PATH, true); CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.EXCEL)) {
             csvPrinter.printRecord(
-                    guest.getId(),
-                    guest.getName(),
-                    guest.getSurname(),
-                    guest.getEmail(),
-                    guest.getPhoneNumber(),
-                    guest.getRole(),
-                    guest.getCompany()
+                    visitor.getId(),
+                    visitor.getFirstName(),
+                    visitor.getLastName(),
+                    visitor.getEmail(),
+                    visitor.getPhoneNumber(),
+                    visitor.getCompany()
             );
         } catch (IOException e) {
             e.printStackTrace();
@@ -65,12 +61,12 @@ public class GuestManager {
     }
 
 
-    public Guest getGuestById(String id) {
-        List<Guest> guests = getGuestsFromFile();
+    public Visitor getVisitorById(String id) {
+        List<Visitor> visitors = getVisitorsFromFile();
 
-        for (Guest guest : guests) {
-            if (guest.getId().equals(id)) {
-                return guest;
+        for (Visitor visitor : visitors) {
+            if (visitor.getId().equals(id)) {
+                return visitor;
             }
         }
         return null;
@@ -78,21 +74,21 @@ public class GuestManager {
 
 
     public int getNewId() {
-        List<Guest> guests = getGuestsFromFile();
+        List<Visitor> visitors = getVisitorsFromFile();
 
-        if (guests.isEmpty()) {
+        if (visitors.isEmpty()) {
             return 1;
         } else {
-            return Integer.parseInt(guests.getLast().getId()) + 1;
+            return Integer.parseInt(visitors.getLast().getId()) + 1;
         }
     }
 
 
-    public boolean isGuestAlreadyExisting(Guest inputGuest) {
-        List<Guest> guests = getGuestsFromFile();
+    public boolean isVisitorAlreadyExisting(Visitor inputVisitor) {
+        List<Visitor> visitors = getVisitorsFromFile();
 
-        for (Guest guest : guests) {
-            if (guest.getEmail().equals(inputGuest.getEmail())) {
+        for (Visitor visitor : visitors) {
+            if (visitor.getEmail().equals(inputVisitor.getEmail())) {
                 return false;
             }
         }
