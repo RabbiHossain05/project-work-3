@@ -35,6 +35,7 @@ public class LoginResource {
         return login.instance();
     }
 
+    @Path("/checkLogin")
     @POST
     public Response checkLogin(
             @FormParam("email") String email,
