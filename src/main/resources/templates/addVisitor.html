@@ -18,6 +18,9 @@
 
     <main>
         <h2>Nuovo visitatore</h2>
+        {#if errorMessage != null}
+            <h3 class="error">{errorMessage}</h3>
+        {/if}
         <form action="/department/add-visitor" method="post">
             <div class="field">
                 <label for="first-name">Nome</label>

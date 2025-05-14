@@ -11,6 +11,7 @@ import model.Visitor;
 import model.visit.Visit;
 import resources.response.VisitWithGuest;
 import service.SessionManager;
+import service.UtilService;
 import service.VisitManager;
 
 import java.net.URI;
@@ -31,12 +32,21 @@ public class UtilResource {
 
     private final VisitManager visitManager;
     private final SessionManager sessionManager;
+    private final UtilService utilService;
 
-    public UtilResource(VisitManager visitManager, SessionManager sessionManager) {
+    public UtilResource(VisitManager visitManager, SessionManager sessionManager, UtilService utilService) {
         this.visitManager = visitManager;
         this.sessionManager = sessionManager;
+        this.utilService = utilService;
     }
 
+    /**
+     * This function return a list of visits filtered by a date
+     * @param sessionId Session id created after login
+     * @param inputDate Date to filter on
+     * @param templateName Page name that call this function
+     * @return Response with a list of visits
+     */
     @Path("/filter-visits/{template}")
     @POST
     @Produces(MediaType.TEXT_HTML)
@@ -70,22 +80,14 @@ public class UtilResource {
 
                 List<Visitor> visitors = visitManager.getVisitors(visits);
 
-                Map<String, List<Visitor>> guestMultiMap = visitors.stream()
-                        .collect(Collectors.groupingBy(Visitor::getId));
+                List<VisitWithGuest> visitWithGuests = utilService.getVisitWithGuests(visitors, visits);
 
-                List<VisitWithGuest> visitWithGuests = new ArrayList<>();
-                for (Visit visit : visits) {
-                    List<Visitor> matchingVisitors = guestMultiMap.get(visit.getGuestId());
-                    if (matchingVisitors != null) {
-                        for (Visitor visitor : matchingVisitors) {
-                            visitWithGuests.add(new VisitWithGuest(visit, visitor));
-                        }
-                    }
-                }
                 return Response.ok(template.data(
                         "employee", employee,
                         "visitWithGuest", visitWithGuests,
-                        "date", inputDate)).build();
+                        "successMessage", "Visite trovate",
+                        "errorMessage", null
+                )).build();
             }
             return Response.seeOther(URI.create("/")).build();
         }

@@ -18,6 +18,9 @@
 
     <main>
         <h2>Nuova visita</h2>
+        {#if errorMessage != null}
+            <h3 class="error">{errorMessage}</h3>
+        {/if}
         <form action="/department/add-visit" method="post">
             <div class="field">
                 <label for="visitor">Visitatore</label>
@@ -31,6 +34,7 @@
             <div class="field">
                 <label for="employee">Dipendente</label>
                 <select name="employee" id="employee">
+                    <option value="" selected disabled>Seleziona il dipendente</option>
                     {#for employee in employees}
                         <option value="{employee.id}">{employee.firstName} {employee.lastName}</option>
                     {/for}
