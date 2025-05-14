@@ -184,8 +184,7 @@ public class VisitManager {
         List<Visit> filteredVisits = new ArrayList<>();
 
         for (Visit visit1 : visits) {
-            if (visit1.getId().equals(visit.getId())) {
-            } else {
+            if (!visit1.getId().equals(visit.getId())) {
                 filteredVisits.add(visit1);
             }
         }
