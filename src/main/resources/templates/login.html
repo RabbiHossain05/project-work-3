@@ -6,21 +6,16 @@
     <title>InfoDrive | Accedi</title>
     <link rel="stylesheet" href="/assets/styles/style.css">
     <link rel="stylesheet" href="/assets/styles/login.css">
-    <script src="../META-INF/resources/assets/scripts/constants.js" defer></script>
-    <script src="../META-INF/resources/assets/scripts/functions.js" defer></script>
-    <script src="../META-INF/resources/assets/scripts/script.js" defer></script>
 </head>
 
 <body>
+
     <header>
         <h1 class="unselectable">Info<span>Drive</span></h1>
     </header>
 
     <main>
         <h2>Accedi</h2>
-        {#if errorMessage != null}
-            <h3 class="error">{errorMessage}</h3>
-        {/if}
         <form action="/" method="post">
             <div class="field">
                 <label for="email">Email</label>
@@ -33,5 +28,13 @@
             <button type="submit">Accedi</button>
         </form>
     </main>
+    <script src="/assets/scripts/constants.js" ></script>
+    <script src="/assets/scripts/functions.js"></script>
+    <script src="/assets/scripts/script.js" ></script>
+    {#if errorMessage != null}
+        <script>
+            renderFeedback(FEEDBACK_ERROR, "{errorMessage.replaceAll("\n", "<br>").raw}", FEEDBACK_PARENT, FEEDBACK_REFERENCE);
+        </script>
+    {/if}
 </body>
 </html>

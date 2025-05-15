@@ -6,9 +6,6 @@
     <title>InfoDrive | Nuovo visitatore</title>
     <link rel="stylesheet" href="/assets/styles/style.css">
     <link rel="stylesheet" href="/assets/styles/inserts.css">
-    <script src="/assets/scripts/constants.js" defer></script>
-    <script src="/assets/scripts/functions.js" defer></script>
-    <script src="/assets/scripts/script.js" defer></script>
 </head>
 
 <body>
@@ -18,9 +15,6 @@
 
     <main>
         <h2>Nuovo visitatore</h2>
-        {#if errorMessage != null}
-            <h3 class="error">{errorMessage}</h3>
-        {/if}
         <form action="/department/add-visitor" method="post">
             <div class="field">
                 <label for="first-name">Nome</label>
@@ -46,5 +40,13 @@
             <a href="/department" id="go-back">Indietro</a>
         </form>
     </main>
+    <script src="/assets/scripts/constants.js" ></script>
+    <script src="/assets/scripts/functions.js"></script>
+    <script src="/assets/scripts/script.js" ></script>
+    {#if errorMessage != null}
+        <script>
+            renderFeedback(FEEDBACK_ERROR, "{errorMessage.replaceAll("\n", "<br>").raw}", FEEDBACK_PARENT, FEEDBACK_REFERENCE);
+        </script>
+    {/if}
 </body>
 </html>

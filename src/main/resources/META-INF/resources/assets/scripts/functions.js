@@ -11,7 +11,7 @@ function renderFeedback(type, text, parentElement, referenceElement) {
     container.className = type;
 
     const paragraph = document.createElement('p');
-    paragraph.innerText = text;
+    paragraph.innerHTML = text;
 
     const svgNS = 'http://www.w3.org/2000/svg';
     const svg = document.createElementNS(svgNS, 'svg');

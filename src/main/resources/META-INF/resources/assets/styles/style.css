@@ -108,7 +108,7 @@ button:active {
 }
 
 #feedback {
-    width: 17.5rem;
+    width: 20.4rem;
     padding: .9rem 1.2rem;
     margin-top: 1.5rem;
     border-radius: .6rem;
@@ -123,10 +123,8 @@ button:active {
 }
 
 .error {
-    margin-top: 1rem;
-    color: red;
-    white-space: pre-wrap;
-    text-align: center;
+    outline: .0625rem solid var(--error);
+    background-color: var(--error-container);
 }
 
 #feedback > p {
