@@ -3,11 +3,11 @@ package resources.response;
 import model.Visitor;
 import model.visit.Visit;
 
-public class VisitWithGuest {
+public class VisitWithVisitor {
     private final Visit visit;
     private final Visitor visitor;
 
-    public VisitWithGuest(Visit visit, Visitor visitor) {
+    public VisitWithVisitor(Visit visit, Visitor visitor) {
         this.visit = visit;
         this.visitor = visitor;
     }
@@ -16,7 +16,7 @@ public class VisitWithGuest {
         return visit;
     }
 
-    public Visitor getGuest() {
+    public Visitor getVisitor() {
         return visitor;
     }
 }

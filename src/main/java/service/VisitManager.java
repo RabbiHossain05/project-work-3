@@ -12,6 +12,7 @@ import org.apache.commons.csv.CSVRecord;
 
 import java.io.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -22,9 +23,13 @@ public class VisitManager {
 
     static final String FILE_PATH = "data/visits.csv";
     private final VisitorManager visitorManager;
+    private final EmployeeManager employeeManager;
+    private final BadgeManager badgeManager;
 
-    public VisitManager(VisitorManager visitorManager) {
+    public VisitManager(VisitorManager visitorManager, EmployeeManager employeeManager, BadgeManager badgeManager) {
         this.visitorManager = visitorManager;
+        this.employeeManager = employeeManager;
+        this.badgeManager = badgeManager;
     }
 
     public List<Visit> getVisitsFromFile() {
@@ -72,7 +77,7 @@ public class VisitManager {
                         visit.getActualEndingHour().format(DateTimeFormatter.ofPattern("HH:mm")),
                         visit.getExpectedDuration(),
                         visit.getStatus().name(),
-                        visit.getGuestId(),
+                        visit.getVisitorId(),
                         visit.getEmployeeId(),
                         visit.getBadgeCode()
                 );
@@ -195,7 +200,7 @@ public class VisitManager {
 
     public boolean overwriteVisits(List<Visit> visits) {
 
-        try (FileWriter writer = new FileWriter(FILE_PATH); CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.EXCEL.withHeader("id", "date", "expected_starting_hour", "actual_starting_hour", "expected_ending_hour", "actual_ending_time", "visit_status", "guest_id", "employee_id", "badge_code"))) {
+        try (FileWriter writer = new FileWriter(FILE_PATH); CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.EXCEL.withHeader("id", "date", "expected_starting_hour", "actual_starting_hour", "expected_ending_hour", "actual_ending_time", "expected_duration", "visit_status", "guest_id", "employee_id", "badge_code"))) {
             for (Visit newVisit : visits) {
                 csvPrinter.printRecord(
                         newVisit.getId(),
@@ -204,8 +209,9 @@ public class VisitManager {
                         newVisit.getActualStartingHour().format(DateTimeFormatter.ofPattern("HH:mm")),
                         newVisit.getExpectedEndingHour().format(DateTimeFormatter.ofPattern("HH:mm")),
                         newVisit.getActualEndingHour().format(DateTimeFormatter.ofPattern("HH:mm")),
+                        newVisit.getExpectedDuration(),
                         newVisit.getStatus().name(),
-                        newVisit.getGuestId(),
+                        newVisit.getVisitorId(),
                         newVisit.getEmployeeId(),
                         newVisit.getBadgeCode()
                 );
@@ -235,7 +241,7 @@ public class VisitManager {
 
         for (Visit v : visits) {
             if (v.getDate().equals(visit.getDate()) && v.getExpectedStartingHour().equals(visit.getExpectedStartingHour())
-                    && v.getExpectedEndingHour().equals(visit.getExpectedEndingHour()) && v.getGuestId().equals(visit.getGuestId())
+                    && v.getExpectedEndingHour().equals(visit.getExpectedEndingHour()) && v.getVisitorId().equals(visit.getVisitorId())
                     && v.getEmployeeId().equals(visit.getEmployeeId())) {
 
                 return true;
@@ -250,10 +256,10 @@ public class VisitManager {
         List<Visit> changedVisits = new ArrayList<>();
 
         for (Visit visit : visits) {
-            Visitor visitor = visitorManager.getVisitorById(visit.getGuestId());
+            Visitor visitor = visitorManager.getVisitorById(visit.getVisitorId());
             Employee employee = employeeManager.getEmployeeById(visit.getEmployeeId());
 
-            visit.setGuestId(visitor.getLastName());
+            visit.setVisitorId(visitor.getLastName());
             visit.setEmployeeId(employee.getLastName());
 
             changedVisits.add(visit);
@@ -267,16 +273,85 @@ public class VisitManager {
         List<Visitor> filteredVisitors = new ArrayList<>();
 
         for (Visit visit : visits) {
-            String guestId = visit.getGuestId();
+            String visitorId = visit.getVisitorId();
 
             for (Visitor visitor : visitors) {
-                if (visitor.getId().equals(guestId)) {
+                if (visitor.getId().equals(visitorId)) {
                     filteredVisitors.add(visitor);
                 }
             }
         }
 
         return filteredVisitors;
+    }
+
+    public List<Employee> getEmployees(List<Visit> visits) {
+        List<Employee> employees = employeeManager.getEmployeesFromFile();
+        List<Employee> filteredEmployees = new ArrayList<>();
+
+        for (Visit visit : visits) {
+            String employeeId = visit.getEmployeeId();
+
+            for (Employee employee : employees) {
+                if (employee.getId().equals(employeeId)) {
+                    filteredEmployees.add(employee);
+                }
+            }
+        }
+
+        return filteredEmployees;
+    }
+
+
+    public String assignBadge(String visitId) {
+        Visit visit = getVisitById(visitId);
+        if (visit == null) {
+            return "Visita non valida.";
+        }
+        if (visit.getStatus() != VisitStatus.NON_INIZIATA) {
+            return "Il badge può essere assegnato solo a visite non iniziate.";
+        }
+        LocalTime now = LocalDateTime.now().toLocalTime();
+        LocalTime startTime = visit.getExpectedStartingHour();
+        if (now.isBefore(startTime)) {
+            return "Non puoi assegnare il badge prima dell'orario di inizio della visita.";
+        }
+        String badgeCode = badgeManager.assignFirstAvailableBadge();
+        if (badgeCode == null) {
+            return "Nessun badge disponibile.";
+        }
+        visit.setBadgeCode(badgeCode);
+        visit.setStatus(VisitStatus.INIZIATA);
+        updateVisit(visit);
+        return "Successo";
+    }
+
+    public void updateVisit(Visit updatedVisit) {
+        List<Visit> visits = getVisitsFromFile();
+        for (int i = 0; i < visits.size(); i++) {
+            if (visits.get(i).getId().equals(updatedVisit.getId())) {
+                visits.set(i, updatedVisit);
+                break;
+            }
+        }
+        overwriteVisits(visits);
+    }
+
+    public String endVisit(String visitId) {
+        Visit visit = getVisitById(visitId);
+        if (visit == null) {
+            return "Visita non valida.";
+        }
+        if (visit.getStatus() != VisitStatus.INIZIATA) {
+            return "Solo le visite iniziate possono essere terminate.";
+        }
+        visit.setStatus(VisitStatus.FINITA);
+        visit.setActualEndingHour(LocalTime.now());
+        updateVisit(visit);
+        if (visit.getBadgeCode() != null) {
+            badgeManager.releaseBadge(visit.getBadgeCode());
+        }
+        return "Successo";
     }
 
 }

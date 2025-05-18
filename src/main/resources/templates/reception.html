@@ -6,10 +6,7 @@
     <title>InfoDrive | Dashboard</title>
     <link rel="stylesheet" href="/assets/styles/style.css">
     <link rel="stylesheet" href="/assets/styles/department.css">
-    <script src="../META-INF/resources/assets/scripts/constants.js" defer></script>
-    <script src="../META-INF/resources/assets/scripts/functions.js" defer></script>
-    <script src="../META-INF/resources/assets/scripts/script.js" defer></script>
-    <script src="../META-INF/resources/assets/scripts/department.js" defer></script>
+    <script src="/assets/scripts/department.js" defer></script>
 </head>
 
 <body>
@@ -18,7 +15,11 @@
         <nav>
              <div id="badges">
                 <img src="/assets/images/badge.jpg" alt="Badges" id="b-icon" class="unselectable">
-                <div id="b-number"><span id="b-available" title="Available badges">9</span> / <span id="b-total" title="Total badges">10</span></div>
+                <div id="b-number">
+                    <span id="b-available" title="Available badges">{badgeStats.available}</span>
+                    /
+                    <span id="b-total" title="Total badges">{badgeStats.total}</span>
+                </div>
              </div>
             <a href="/logout" class="logout">Esci</a>
         </nav>
@@ -39,7 +40,7 @@
                     <th>Visitatore</th>
                     <th>Email visitatore</th>
                     <th>Dipendente</th>
-                    <th>Email dipendente</th>
+                    <th>Data</th>
                     <th>Ora d'inizio</th>
                     <th>Durata prevista</th>
                     <th>Ora di fine</th>
@@ -49,64 +50,60 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Marco Rossi</td>
-                    <td>marco.rossi@example.com</td>
-                    <td>Giulio Verdi</td>
-                    <td>giulio.verdi@example.com</td>
-                    <td>10:00</td>
-                    <td>120 min</td>
-                    <td class="expected-end">12:00</td>
-                    <td>
-                        <div class="status-container">
-                            <div class="status in-progress"></div>
-                            In corso
-                        </div>
-                    </td>
-                    <td>B001</td>
-                    <td>
-                        <button class="action end-visit">Termina visita</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Giulio Verdi</td>
-                    <td>giulio.verdi@example.com</td>
-                    <td>Roberto Blu</td>
-                    <td>roberto.blu@example.com</td>
-                    <td>15:00</td>
-                    <td>180 min</td>
-                    <td class="expected-end">18:00</td>
-                    <td>
-                        <div class="status-container">
-                            <div class="status pending"></div>
-                            In attesa
-                        </div>
-                    </td>
-                    <td></td>
-                    <td>
-                        <button class="action assign-badge">Assegna badge</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Roberto Blu</td>
-                    <td>roberto.blu@example.com</td>
-                    <td>Marco Rossi</td>
-                    <td>marco.rossi@example.com</td>
-                    <td>09:00</td>
-                    <td>90 min</td>
-                    <td>10:25</td>
-                    <td>
-                        <div class="status-container">
-                            <div class="status completed"></div>
-                            Completato
-                        </div>
-                    </td>
-                    <td></td>
-                    <td></td>
-                </tr>
+
+                {#for item in visitWithVisitorWithEmployees}
+                    <tr>
+                        <td>{item.visitor.firstName} {item.visitor.lastName}</td>
+                        <td>{item.visitor.email}</td>
+                        <td>{item.employee.firstName} {item.employee.lastName}</td>
+                        <td>{item.visit.date}</td>
+                        <td>{item.visit.expectedStartingHour}</td>
+                        <td>{item.visit.expectedDuration} min</td>
+                        <td class="expected-end">{item.visit.expectedEndingHour}</td>
+                        <td>
+                            <div class="status-container">
+                                {#if item.visit.status.toString().equals("NON_INIZIATA")}
+                                    <div class="status pending"></div>
+                                    In attesa
+                                {/if}
+                                {#if item.visit.status.toString().equals("INIZIATA")}
+                                    <div class="status in-progress"></div>
+                                    In corso
+                                {/if}
+                                {#if item.visit.status.toString().equals("FINITA")}
+                                    <div class="status completed"></div>
+                                    Completato
+                                {/if}
+                            </div>
+                        </td>
+                        <td>{item.visit.badgeCode}</td>
+                        <td>
+                            {#if item.visit.status.toString().equals("NON_INIZIATA")}
+                                <form action="/reception/assign-badge" method="post">
+                                    <input type="hidden" value="{item.visit.id}" name="visit-id">
+                                    <button class="action assign-badge">Assegna badge</button>
+                                </form>
+                            {/if}
+                            {#if item.visit.status.toString().equals("INIZIATA")}
+                                <form action="/reception/close-visit" method="post">
+                                    <input type="hidden" value="{item.visit.id}" name="visit-id">
+                                    <button class="action end-visit">Termina visita</button>
+                                </form>
+                            {/if}
+                        </td>
+                    </tr>
+                {/for}
             </tbody>
         </table>
         <!-- <div id="no-visits">Nessuna visita prenotata.</div> -->
     </main>
+    <script src="/assets/scripts/constants.js" ></script>
+    <script src="/assets/scripts/functions.js"></script>
+    <script src="/assets/scripts/script.js" ></script>
+    {#if errorMessage != null}
+        <script>
+            renderFeedback(FEEDBACK_ERROR, "{errorMessage.replaceAll("\n", "<br>").raw}", FEEDBACK_PARENT, FEEDBACK_REFERENCE);
+        </script>
+    {/if}
 </body>
 </html>

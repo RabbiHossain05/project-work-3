@@ -4,7 +4,7 @@ import io.quarkus.qute.Template;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import resources.response.VisitWithGuest;
+import resources.response.VisitWithVisitor;
 import service.*;
 import model.*;
 import model.visit.*;
@@ -13,11 +13,8 @@ import java.net.URI;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import static service.SessionManager.NAME_COOKIE_SESSION;
 
@@ -71,10 +68,10 @@ public class DepartmentResource {
 
                     List<Visitor> visitors = visitManager.getVisitors(filteredVisits);
 
-                    List<VisitWithGuest> visitWithGuests = utilService.getVisitWithGuests(visitors, filteredVisits);
+                    List<VisitWithVisitor> visitWithVisitors = utilService.getVisitWithVisitor(visitors, filteredVisits);
                     return Response.ok(department.data(
                             "employee", employee,
-                            "visitWithGuest", visitWithGuests,
+                            "visitWithVisitor", visitWithVisitors,
                             "successMessage", null,
                             "errorMessage", null
                     )).build();
@@ -160,11 +157,11 @@ public class DepartmentResource {
                         visitorManager.saveVisitor(visitor);
 
                         List<Visit> visits = visitManager.filterVisitsByEmployeeId(visitManager.getVisitsFromFile(), employee.getId());
-                        List<VisitWithGuest> visitWithGuests = utilService.getVisitWithGuests(visitManager.getVisitors(visits), visits);
+                        List<VisitWithVisitor> visitWithVisitors = utilService.getVisitWithVisitor(visitManager.getVisitors(visits), visits);
 
                         return Response.ok(department.data(
                                 "employee", employee,
-                                "visitWithGuest", visitWithGuests,
+                                "visitWithVisitor", visitWithVisitors,
                                 "successMessage", "Visitatore aggiunto con successo",
                                 "errorMessage", null
                         )).build();
@@ -263,7 +260,7 @@ public class DepartmentResource {
                             }
                         }
 
-                        if (countOverlapVisits == badgeManager.countBadges()) {
+                        if (countOverlapVisits == badgeManager.getAllBadges().size()) {
                             errorMessage += "Non ci sono più badge disponibili\n";
 
                             return Response.ok(addVisit.data(

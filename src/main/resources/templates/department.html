@@ -44,10 +44,10 @@
                 </tr>
             </thead>
             <tbody>
-                {#for item in visitWithGuest}
+                {#for item in visitWithVisitor}
                     <tr>
-                        <td>{item.guest.firstName} {item.guest.lastName}</td>
-                        <td>{item.guest.email}</td>
+                        <td>{item.visitor.firstName} {item.visitor.lastName}</td>
+                        <td>{item.visitor.email}</td>
                         <td>{item.visit.date}</td>
                         <td>{item.visit.expectedStartingHour}</td>
                         <td>{item.visit.expectedDuration} min</td>
@@ -70,7 +70,7 @@
                         </td>
                         <td>
                             {#if item.visit.status.toString().equals("NON_INIZIATA")}
-                                <form action="/reception/delete-visit" method="post">
+                                <form action="/department/delete-visit" method="post">
                                     <input type="hidden" value="{item.visit.id}" name="visit-id">
                                     <button class="action delete-visit">Elimina</button>
                                 </form>

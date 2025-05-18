@@ -9,18 +9,18 @@ import jakarta.ws.rs.core.Response;
 import model.Employee;
 import model.Visitor;
 import model.visit.Visit;
-import resources.response.VisitWithGuest;
+import resources.response.VisitWithVisitor;
+import resources.response.VisitWithVisitorWithEmployee;
+import service.BadgeManager;
 import service.SessionManager;
 import service.UtilService;
 import service.VisitManager;
 
 import java.net.URI;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static service.SessionManager.NAME_COOKIE_SESSION;
 
@@ -33,11 +33,13 @@ public class UtilResource {
     private final VisitManager visitManager;
     private final SessionManager sessionManager;
     private final UtilService utilService;
+    private final BadgeManager badgeManager;
 
-    public UtilResource(VisitManager visitManager, SessionManager sessionManager, UtilService utilService) {
+    public UtilResource(VisitManager visitManager, SessionManager sessionManager, UtilService utilService, BadgeManager badgeManager) {
         this.visitManager = visitManager;
         this.sessionManager = sessionManager;
         this.utilService = utilService;
+        this.badgeManager = badgeManager;
     }
 
     /**
@@ -64,10 +66,27 @@ public class UtilResource {
             if (employee != null) {
                 if (employee.getDepartment().equals("Reception")) {
                     if (inputDate == null) {
-                        visits = visitManager.getVisitsFromFile();
+                        visits = visitManager.getVisitsByDate(LocalDate.now());
                     } else {
                         visits = visitManager.getVisitsByDate(inputDate);
                     }
+
+                    visits.sort(Comparator.comparing(Visit::getDate));
+
+                    List<Visitor> visitors = visitManager.getVisitors(visits);
+                    List<Employee> employees = visitManager.getEmployees(visits);
+
+                    List<VisitWithVisitorWithEmployee> visitWithVisitorsWithEmployees = utilService.getVisitWithGuestsWithEmployee(visitors, visits, employees);
+
+                    Map<String, Integer> badgeStats = badgeManager.getBadgeStats();
+
+                    return Response.ok(template.data(
+                            "employee", employee,
+                            "visitWithVisitorWithEmployees", visitWithVisitorsWithEmployees,
+                            "successMessage", "Visite trovate",
+                            "errorMessage", null,
+                            "badgeStats", badgeStats
+                    )).build();
                 } else {
                     if (inputDate == null) {
                         visits = visitManager.filterVisitsByEmployeeId(visitManager.getVisitsFromFile(), employee.getId());
@@ -75,19 +94,20 @@ public class UtilResource {
                         visits = visitManager.filterVisitsByEmployeeId(visitManager.getVisitsByDate(inputDate), employee.getId());
                     }
                 }
-
                 visits.sort(Comparator.comparing(Visit::getDate));
 
                 List<Visitor> visitors = visitManager.getVisitors(visits);
 
-                List<VisitWithGuest> visitWithGuests = utilService.getVisitWithGuests(visitors, visits);
+                List<VisitWithVisitor> visitWithVisitors = utilService.getVisitWithVisitor(visitors, visits);
+
 
                 return Response.ok(template.data(
                         "employee", employee,
-                        "visitWithGuest", visitWithGuests,
+                        "visitWithVisitor", visitWithVisitors,
                         "successMessage", "Visite trovate",
                         "errorMessage", null
                 )).build();
+
             }
             return Response.seeOther(URI.create("/")).build();
         }
