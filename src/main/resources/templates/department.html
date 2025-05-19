@@ -51,7 +51,11 @@
                         <td>{item.visit.date}</td>
                         <td>{item.visit.expectedStartingHour}</td>
                         <td>{item.visit.expectedDuration} min</td>
-                        <td class="expected-end">{item.visit.expectedEndingHour}</td>
+                        {#if item.visit.status.toString().equals("FINITA")}
+                            <td class="expected-end">{item.visit.expectedEndingHour}</td>
+                        {#else}
+                            <td>{item.visit.actualEndingHour}</td>
+                        {/if}
                         <td>
                             <div class="status-container">
                                 {#if item.visit.status.toString().equals("NON_INIZIATA")}

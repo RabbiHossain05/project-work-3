@@ -125,8 +125,9 @@ nav > a {
 .department th:nth-child(4),
 .department th:nth-child(5),
 .department th:nth-child(6),
-.department th:nth-child(7) {
-    width: 12%;
+.department th:nth-child(7),
+.department th:nth-child(8) {
+    width: 10%;
 }
 .reception th:nth-child(1),
 .reception th:nth-child(3) {
@@ -176,13 +177,14 @@ nav > a {
 .department td:nth-child(3),
 .department td:nth-child(4),
 .department td:nth-child(5),
+.department td:nth-child(6),
 .reception td:nth-child(5),
 .reception td:nth-child(6),
 .reception td:nth-child(7),
 .reception td:nth-child(9) {
     text-align: center;
 }
-.department td:nth-child(7) {
+.department td:nth-child(8) {
     position: relative;
 }
 .reception td:nth-child(10) {
@@ -201,7 +203,7 @@ nav > a {
 }
 
 .department .status-container {
-    padding-left: 1.2rem;
+    padding-left: .4rem;
 }
 
 .reception .status-container {
@@ -243,6 +245,16 @@ nav > a {
 .reception .completed {
     background-color: var(--completed);
     filter: drop-shadow(0 0 .15rem var(--completed));
+}
+
+.department form {
+    padding: 0;
+    margin: 0;
+}
+
+.reception form {
+    padding: 0;
+    margin: 0;
 }
 
 .action {
